@@ -5,12 +5,18 @@ import sys
 import streamlit as st
 import base64
 
+# --- Function to set local image as background ---
 def set_background(image_file):
-    if not os.path.exists(image_file):
-        st.error(f"Could not find {image_file}. Please ensure it is in the same folder.")
+    # This forces Python to look in the same folder as Rbot.py
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    image_path = os.path.join(script_dir, image_file)
+
+    if not os.path.exists(image_path):
+        st.error(f"Could not find {image_file}. I looked exactly here: {image_path}")
         return
 
-    with open(image_file, "rb") as f:
+    # Open using the new exact path
+    with open(image_path, "rb") as f:
         encoded_string = base64.b64encode(f.read()).decode()
 
     st.markdown(
@@ -56,6 +62,7 @@ def set_background(image_file):
         """,
         unsafe_allow_html=True
     )
+
 
 class Rbot:
     def __init__(self):

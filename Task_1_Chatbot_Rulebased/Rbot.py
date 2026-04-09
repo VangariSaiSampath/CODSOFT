@@ -96,10 +96,8 @@ class Rbot:
             ]
         }
         self.default_responses = [
-            "That's interesting! Tell me more.",
             "I'm not sure I understand. Could you rephrase that?",
             "Focusing... could you say that again?",
-            "Interesting point! How does that make you feel?"
         ]
 
     def get_response(self, user_input):

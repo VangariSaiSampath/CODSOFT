@@ -41,7 +41,7 @@ const App = () => {
 
   const fetchMove = async (currentBoard) => {
     try {
-      const response = await fetch("https://task-2-tic-tac-toe-ai.onrender.com"/move, {
+      const response = await fetch("https://task-2-tic-tac-toe-ai.onrender.com/move", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ board: currentBoard }) 

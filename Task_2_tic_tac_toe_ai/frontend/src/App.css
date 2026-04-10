@@ -1,0 +1,144 @@
+/* frontend/src/App.css */
+
+/* App container and layout */
+.App {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  text-align: center;
+  /* 1. Remove the old gradient background and set a fallback color */
+  background-color: #000;
+  
+  /* 2. Configure the background image properties */
+  background-size: cover; /* This makes the image cover the entire screen */
+  background-position: center; /* Centers the image */
+  background-repeat: no-repeat; /* Prevents the image from tiling */
+  background-attachment: fixed; /* Keep the image in place when scrolling */
+  
+  color: white;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  overflow: hidden; /* Hide scrollbars */
+}
+
+/* Clear title */
+.header h1 {
+  font-size: 3rem;
+  color: #fff;
+  text-shadow: 0 0 10px #00f, 0 0 20px #00f, 0 0 40px #f0f;
+  margin-bottom: 2rem;
+}
+
+/* Proper 3x3 Grid */
+.game-board {
+  display: grid;
+  grid-template-columns: repeat(3, 100px);
+  grid-template-rows: repeat(3, 100px);
+  gap: 8px; /* Gap creates the board lines */
+  background-color: #31313a; /* Dark gray lines */
+  padding: 8px;
+  border-radius: 8px;
+  box-shadow: 0 0 20px rgba(0, 0, 255, 0.4);
+}
+
+/* Individual Grid squares */
+.square {
+  background-color: #10101a;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease-in-out;
+  position: relative;
+}
+
+/* Hover effect */
+.square:hover {
+  background-color: #181827;
+  transform: scale(1.05);
+}
+
+/* Common piece style - invisible text, visible neon pseudo-element */
+.piece {
+  font-size: 4rem;
+  font-weight: bold;
+  line-height: 1;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Specific styling for Human Player (X) */
+.piece.X {
+  color: #2bdaff; /* Bright Cyan/Blue */
+  text-shadow: 0 0 10px #2bdaff, 0 0 20px #2bdaff, 0 0 30px #00f;
+}
+
+/* Specific styling for AI Player (O) */
+.piece.O {
+  color: #ff3c8f; /* Bright Magenta/Pink */
+  text-shadow: 0 0 10px #ff3c8f, 0 0 20px #ff3c8f, 0 0 30px #f0f;
+}
+
+/* Winner line styling */
+.square.win-line {
+  background-color: #1a1a2e;
+  box-shadow: inset 0 0 15px rgba(255, 255, 255, 0.2);
+}
+
+/* Clear Player Status Messages */
+.status h2 {
+  font-size: 1.8rem;
+  color: #eee;
+  margin: 1.5rem 0;
+  text-shadow: 0 0 5px #ff3c8f;
+}
+.status.human-turn h2 { color: #2bdaff; text-shadow: 0 0 5px #2bdaff; }
+.status.ai-turn h2 { color: #ff3c8f; text-shadow: 0 0 5px #ff3c8f; }
+
+/* The Unbeatable Message */
+.unbeatable-note {
+  font-size: 1rem;
+  color: #aaa;
+  font-style: italic;
+  margin-top: -10px;
+  margin-bottom: 20px;
+}
+
+/* Reset Button */
+.reset-btn {
+  margin-top: 2rem;
+  padding: 12px 24px;
+  font-size: 1.2rem;
+  font-style: italic;
+  
+  color: #0d0202;
+  border: 2px solid #ff3c8f;
+  border-radius: 8px;
+  cursor: pointer;
+  text-transform: uppercase;
+  font-weight: bold;
+  box-shadow: 0 0 10px #ff3c8f;
+  transition: background-color 0.2s;
+}
+
+.reset-btn:hover {
+  background-color: rgba(235, 228, 231, 0.1);
+  box-shadow: 0 0 20px #15080e;
+}
+
+/* 3. Standard Code for the Watermark */
+.watermark {
+  position: absolute;
+  bottom: 10px; /* Position from the bottom */
+  right: 15px; /* Position from the right */
+  font-size: 0.9rem; /* Professional, smaller font size */
+  color: rgba(255, 255, 255, 0.6); /* Slightly transparent white for a subtle look */
+  text-shadow: 0 0 3px rgba(0, 0, 0, 0.5); /* Adds a small text shadow for readability */
+  pointer-events: none; /* Prevents the watermark from interfering with clicks */
+}

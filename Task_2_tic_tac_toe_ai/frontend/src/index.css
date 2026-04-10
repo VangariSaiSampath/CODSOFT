@@ -4,5 +4,5 @@ body {
   background-color: #000;
   color: white;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  overflow: hidden; /* Hide scrollbars */
+  overflow: hidden; 
 }

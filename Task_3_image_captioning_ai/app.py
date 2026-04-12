@@ -29,92 +29,102 @@ def check_hashes(password, hashed_text):
     return make_hashes(password) == hashed_text
 
 # --- STYLING ---
-def inject_global_styling(image_file, overlay_opacity=0.25,is_login=True):
+def inject_global_styling(image_file, overlay_opacity=0.5, is_login=True):
+    """Safely injects CSS to set the background and style components."""
     try:
         current_dir = os.path.dirname(os.path.abspath(__file__))
         full_image_path = os.path.join(current_dir, image_file)
         
-        with open(image_file, "rb") as file:
+        with open(full_image_path, "rb") as file:
             encoded_string = base64.b64encode(file.read()).decode()
-
-        st.markdown(f"""
+        
+        css = f"""
         <style>
-
         .stApp {{
-            background-image: linear-gradient(rgba(0,0,0,{overlay_opacity}), rgba(0,0,0,{overlay_opacity})),
-            url(data:image/jpeg;base64,{encoded_string});
+            background-image: linear-gradient(rgba(0, 0, 0, {overlay_opacity}), rgba(0, 0, 0, {overlay_opacity})), url(data:image/jpeg;base64,{encoded_string});
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
         }}
-
-        h1,h2,h3,h4,h5,h6,p,label,span {{
-            color: white !important;
-            text-shadow: 0px 2px 6px rgba(0,0,0,0.7);
+        
+        /* Force ALL typography to white to override Streamlit's light theme */
+        h1, h2, h3, h4, h5, h6, p, span, label, div[data-testid="stMarkdownContainer"] > p {{
+            color: #FFFFFF !important;
         }}
+        
+        /* Style info/success boxes so they are dark and readable */
+        div[data-testid="stAlert"] {{
+            background-color: rgba(30, 30, 40, 0.85) !important;
+            color: white !important;
+            border: 1px solid rgba(255, 255, 255, 0.2) !important;
+            border-radius: 8px !important;
+        }}
+        """
 
-        /* MAIN UPLOADER CONTAINER */
-        div[data-testid="stFileUploader"] > div {{
-            background-color: rgba(0,0,0,0.8) !important;
-            border-radius: 12px !important;
-            border: 1px solid rgba(255,255,255,0.4) !important;
+        if is_login:
+            css += """
+            .block-container {
+                background-color: transparent !important;
+                padding-top: 3rem !important;
+            }
+            """
+        else:
+            css += """
+            .block-container {
+                background-color: rgba(17, 24, 39, 0.85) !important; 
+                padding: 3rem !important;
+                border-radius: 15px !important;
+                margin-top: 3rem !important;
+                margin-bottom: 3rem !important;
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7) !important;
+                border: 1px solid rgba(255, 255, 255, 0.1) !important;
+            }
+            """
+
+        # Shared input/button styles
+        css += """
+        .stTextInput > div > div > input {
+            background-color: rgba(31, 41, 55, 0.6) !important;
+            color: white !important;
+            border: 1px solid rgba(255, 255, 255, 0.2) !important;
+            border-radius: 8px !important;
+            padding: 12px !important;
+        }
+        div.stButton > button[kind="primary"] {
+            background-color: #3b82f6 !important;
+            color: white !important;
+            border-radius: 8px !important;
+            width: 100% !important;
+            border: none !important;
             padding: 10px !important;
-        }}
-
-        /* DRAG TEXT */
-        div[data-testid="stFileUploader"] * {{
-            color: white !important;
-            opacity: 1 !important;
-        }}
-
-        /* BROWSE BUTTON */
-        div[data-testid="stFileUploader"] button {{
+            font-weight: bold !important;
+            margin-top: 10px !important;
+        }
+        
+        /* FILE UPLOADER VISIBILITY */
+        div[data-testid="stFileUploadDropzone"] {
+            background-color: rgba(31, 41, 55, 0.6) !important;
+            border: 2px dashed rgba(255, 255, 255, 0.4) !important;
+            border-radius: 10px !important;
+        }
+        div[data-testid="stFileUploadDropzone"] button {
             background-color: #3b82f6 !important;
             color: white !important;
             border: none !important;
-            opacity: 1 !important;
-        }}
-
-        /* FILE NAME */
-        div[data-testid="stFileUploader"] span {{
-            color: white !important;
-            font-weight: 500 !important;
-            opacity: 1 !important;
-        }}
-
-        /* REMOVE GREY OVERLAY */
-        div[data-testid="stFileUploader"] section {{
-            background: transparent !important;
-        }}
-
-
-        div[data-testid="stSuccess"] {{
-            background-color: rgba(0,0,0,0.6) !important;
-            border-radius: 10px !important;
-        }}
-
-        div[data-testid="stInfo"] {{
-            background-color: rgba(0,0,0,0.6) !important;
-            border-radius: 10px !important;
-        }}
-
-        .block-container {{
-            background: transparent !important;
-        }}
-
-        div.stButton > button {{
-            background-color: #3b82f6 !important;
-            color: white !important;
-            border-radius: 10px !important;
-            width: 100% !important;
+            border-radius: 6px !important;
+            padding: 5px 15px !important;
             font-weight: bold !important;
-        }}
-
+        }
+        div[data-testid="stUploadedFile"] {
+            background-color: rgba(31, 41, 55, 0.8) !important;
+            border: 1px solid rgba(255, 255, 255, 0.2) !important;
+            border-radius: 8px !important;
+        }
         </style>
-        """, unsafe_allow_html=True)
-
-    except:
-        pass
+        """
+        st.markdown(css, unsafe_allow_html=True)
+    except FileNotFoundError as e:
+        st.warning(f"Background image not found at: {e}")
 
 # --- AI MODEL ---
 @st.cache_resource

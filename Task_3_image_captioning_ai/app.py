@@ -230,10 +230,20 @@ else:
         st.title("📸 AI Image Captioning")
         st.markdown("Upload an image, and the AI will generate a caption.")
 
-        uploaded_file = st.file_uploader("Choose an image", type=["jpg", "jpeg", "png"])
+        # --- THE NEW CAMERA INTEGRATION ---
+        input_method = st.radio("Select Input Method:", ["📁 Upload File", "📷 Take Picture"], horizontal=True)
+        st.markdown("<br>", unsafe_allow_html=True)
 
-        if uploaded_file is not None:
-            raw_image = Image.open(uploaded_file).convert('RGB')
+        image_source = None
+        
+        if input_method == "📁 Upload File":
+            image_source = st.file_uploader("Choose an image", type=["jpg", "jpeg", "png"])
+        else:
+            image_source = st.camera_input("Take a picture with your camera")
+
+        # If either an upload or a camera snapshot is provided, process it
+        if image_source is not None:
+            raw_image = Image.open(image_source).convert('RGB')
 
             col1, col2 = st.columns(2)
 

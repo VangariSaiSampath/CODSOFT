@@ -29,8 +29,11 @@ def check_hashes(password, hashed_text):
     return make_hashes(password) == hashed_text
 
 # --- STYLING ---
-def inject_global_styling(image_file, overlay_opacity=0.25):
+def inject_global_styling(image_file, overlay_opacity=0.25,is_login=True):
     try:
+        current_dir = os.path.dirname(os.path.abspath(__file__))
+        full_image_path = os.path.join(current_dir, image_file)
+        
         with open(image_file, "rb") as file:
             encoded_string = base64.b64encode(file.read()).decode()
 
